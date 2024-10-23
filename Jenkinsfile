@@ -4,30 +4,30 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                // Build the Docker image
-                sh 'docker build -t mywebapp .'
+                // No build needed for static HTML
+                echo 'Static HTML file - no build required'
             }
         }
         
         stage('Test') {
             steps {
-                // Run tests (example)
+                // Basic HTML validation
                 sh '''
-                    docker run -d --name test_container mywebapp
-                    # Add your test commands here
-                    docker stop test_container
-                    docker rm test_container
+                    # Check if file exists
+                    test -f index.html || exit 1
+                    # Optional: Add HTML validation if needed
                 '''
             }
         }
         
         stage('Deploy') {
             steps {
-                // Deploy the application
+                // Copy to web server directory
                 sh '''
-                    docker stop production_container || true
-                    docker rm production_container || true
-                    docker run -d --name production_container -p 8080:80 mywebapp
+                    # Create deployment directory if it doesn't exist
+                    mkdir -p /var/www/html
+                    # Copy index.html to deployment location
+                    cp index.html /var/www/html/
                 '''
             }
         }
