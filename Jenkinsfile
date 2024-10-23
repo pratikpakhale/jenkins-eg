@@ -1,9 +1,7 @@
 pipeline {
     agent any
     
-    tools {
-        nodejs 'NodeJS' // Make sure to configure NodeJS in Jenkins Global Tool Configuration
-    }
+ 
     
     stages {
         stage('Install Dependencies') {
