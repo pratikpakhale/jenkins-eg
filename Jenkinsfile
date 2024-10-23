@@ -1,7 +1,25 @@
 pipeline {
     agent any
     
- 
+    stage('Setup Node.js') {
+    steps {
+        sh '''
+            # Update package list
+            sudo apt-get update
+            
+            # Install curl and Node.js repository
+            sudo apt-get install -y curl
+            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo bash -
+            
+            # Install Node.js and npm
+            sudo apt-get install -y nodejs
+            
+            # Verify installation
+            node --version
+            npm --version
+        '''
+    }
+}
     
     stages {
         stage('Install Dependencies') {
