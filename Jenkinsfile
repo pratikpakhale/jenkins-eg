@@ -13,7 +13,9 @@ pipeline {
         
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh 'npm remove node_modules &&
+                    npm remove package-lock.json &&
+                    npm install'
             }
         }
         
