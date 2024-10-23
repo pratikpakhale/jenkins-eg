@@ -1,26 +1,16 @@
 pipeline {
-    agent any
-    
-    stages {
-        stage('Setup Node.js') {
-            steps {
-                sh '''
-                    # Update package list
-                    apt-get update
-                    
-                    # Install curl and Node.js repository
-                    apt-get install -y curl
-                    curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-                    
-                    # Install Node.js and npm
-                    apt-get install -y nodejs
-                    
-                    # Verify installation
-                    node --version
-                    npm --version
-                '''
-            }
+    agent agent {
+        docker {
+            image 'node:lts-buster-slim'
+            args '-p 3000:3000'
         }
+    }
+    
+    environment {
+        CI = 'true'
+    }
+
+    stages {
         
         stage('Install Dependencies') {
             steps {
