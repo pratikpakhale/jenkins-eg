@@ -1,27 +1,27 @@
 pipeline {
     agent any
     
-    stage('Setup Node.js') {
-    steps {
-        sh '''
-            # Update package list
-            sudo apt-get update
-            
-            # Install curl and Node.js repository
-            sudo apt-get install -y curl
-            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo bash -
-            
-            # Install Node.js and npm
-            sudo apt-get install -y nodejs
-            
-            # Verify installation
-            node --version
-            npm --version
-        '''
-    }
-}
-    
     stages {
+        stage('Setup Node.js') {
+            steps {
+                sh '''
+                    # Update package list
+                    apt-get update
+                    
+                    # Install curl and Node.js repository
+                    apt-get install -y curl
+                    curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+                    
+                    # Install Node.js and npm
+                    apt-get install -y nodejs
+                    
+                    # Verify installation
+                    node --version
+                    npm --version
+                '''
+            }
+        }
+        
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
@@ -49,15 +49,6 @@ pipeline {
                     echo "Application deployed at http://localhost:3000"
                 '''
             }
-        }
-    }
-    
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 }
