@@ -22,7 +22,7 @@ pipeline {
                 sh '''
                     # Deploy to Jenkins workspace
                     mkdir -p ${WORKSPACE}/public
-                    cp index.html ${WORKSPACE}/public/
+                    cp -r index.html ${WORKSPACE}/public/
                     
                     # Print deployment location for verification
                     echo "Deployed to: ${WORKSPACE}/public/"
