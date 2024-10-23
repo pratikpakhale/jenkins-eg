@@ -1,33 +1,47 @@
 pipeline {
     agent any
     
+    tools {
+        nodejs 'NodeJS' // Make sure to configure NodeJS in Jenkins Global Tool Configuration
+    }
+    
     stages {
-        stage('Build') {
+        stage('Install Dependencies') {
             steps {
-                echo 'Static HTML file - no build required'
+                sh 'npm install'
             }
         }
         
         stage('Test') {
             steps {
-                sh '''
-                    # Check if file exists
-                    test -f index.html || exit 1
-                '''
+                sh 'npm test'
             }
         }
         
         stage('Deploy') {
             steps {
                 sh '''
-                    # Deploy to Jenkins workspace
-                    mkdir -p ${WORKSPACE}/public
-                    cp -r index.html ${WORKSPACE}/public/
+                    # Kill existing node process if running
+                    pkill node || true
                     
-                    # Print deployment location for verification
-                    echo "Deployed to: ${WORKSPACE}/public/"
+                    # Start the application in background
+                    nohup npm start > output.log 2>&1 &
+                    
+                    # Wait for app to start
+                    sleep 5
+                    
+                    echo "Application deployed at http://localhost:3000"
                 '''
             }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
