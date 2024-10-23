@@ -9,7 +9,7 @@ pipeline {
         
         stage('Install Dependencies') {
             steps {
-                sh '/home/pratz/.nvm/versions/node/v22.7.0/bin/npm install'
+                sh 'sudo /home/pratz/.nvm/versions/node/v22.7.0/bin/npm install'
             }
         }
         
