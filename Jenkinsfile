@@ -9,13 +9,13 @@ pipeline {
         
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh '/home/pratz/.nvm/versions/node/v22.7.0/bin/npm install'
             }
         }
         
         stage('Test') {
             steps {
-                sh 'npm test'
+                sh '/home/pratz/.nvm/versions/node/v22.7.0/bin/npm test'
             }
         }
         
@@ -26,7 +26,7 @@ pipeline {
                     pkill node || true
                     
                     # Start the application in background
-                    nohup npm start > output.log 2>&1 &
+                    nohup /home/pratz/.nvm/versions/node/v22.7.0/bin/npm start > output.log 2>&1 &
                     
                     # Wait for app to start
                     sleep 5
